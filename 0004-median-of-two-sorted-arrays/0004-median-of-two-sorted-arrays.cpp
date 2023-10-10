@@ -1,49 +1,36 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        int i = 0;
-        int j = 0;
         int n1 = nums1.size();
         int n2 = nums2.size();
-        int n = n1+n2;
-        int cnt = 0;    
-        int ind1 = n/2;
-        int ind2 = n/2+1;
-        int ele1 = -1;
-        int ele2 = -1;
+        if(n1 > n2){
+            return findMedianSortedArrays(nums2,nums1);
+        }
+        int n = n1 + n2;
+        int left = (n1 + n2 + 1)/2;
+        int s = 0;
+        int e = n1;
+        while(s <= e){
+            int m1 = (s+e) >> 1;
+            int m2 = (left-m1);
+            int l1 = INT_MIN, l2 = INT_MIN;
+            int r1 = INT_MAX, r2 = INT_MAX;
+            if(m1 < n1) r1 = nums1[m1];
+            if(m2 < n2) r2 = nums2[m2];
+            if(m1-1 >= 0) l1 = nums1[m1-1];
+            if(m2-1 >= 0) l2 = nums2[m2-1];
 
-        while(i < n1 && j < n2){
-            if(nums1[i] < nums2[j]){
-                cnt++;
-                if(cnt == ind1) ele1 = nums1[i];
-                if(cnt == ind2) ele2 = nums1[i];
-                i++;
+            if(r2 >= l1 && r1 >= l2){
+                if(n%2 == 1) return max(l1,l2);
+                return (double)(max(l1,l2)+min(r1,r2))/2.0;
+            }
+
+            if(l1 > r2){
+                e = m1-1;
             }else{
-                cnt++;
-                if(cnt == ind1) ele1 = nums2[j];
-                if(cnt == ind2) ele2 = nums2[j];
-                j++;
+                s = m1+1;
             }
         }
-
-        while(i < n1){
-            cnt++;
-            if(cnt == ind1) ele1 = nums1[i];
-            if(cnt == ind2) ele2 = nums1[i];
-            i++;
-        }
-
-        while(j < n2){
-            cnt++;
-            if(cnt == ind1) ele1 = nums2[j];
-            if(cnt == ind2) ele2 = nums2[j];
-            j++;
-        }
-
-        if(n%2 == 1){
-            return (double)ele2;
-        }
-
-        return (double)((double)(ele1+ele2)/2.0);
+        return 0;
     }
 };
