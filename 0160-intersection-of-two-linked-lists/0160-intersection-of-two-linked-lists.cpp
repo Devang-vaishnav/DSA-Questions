@@ -8,33 +8,39 @@
  */
 class Solution {
 public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-
-        //Creating a loop
-        ListNode* tail = headA;
-        while(tail -> next != NULL){
-            tail = tail -> next;
-        }
-        tail -> next = headA;
-
-        //Floyd loop detection and finding starting node.
-        ListNode* slow = headB;
-        ListNode* fast = headB;
-        while(fast != NULL && fast -> next != NULL){
-            slow = slow -> next;
-            fast = fast -> next -> next;
-            if(slow == fast){
-                slow = headB;
-                while(slow != fast){
-                    slow = slow -> next;
-                    fast = fast -> next;
-                }
-                tail -> next = NULL;
-                return slow;
+    ListNode* solve(ListNode *headA, ListNode *headB, int l1, int l2){
+        if(l1 > l2){
+            while(l1 != l2){
+                headA = headA -> next;
+                l1--;
+            }
+        }else{
+            while(l1 != l2){
+                headB = headB -> next;
+                l2--;
             }
         }
-        tail -> next = NULL;
-        return NULL;
 
+        while(headA != NULL && headB != NULL){
+            if(headA == headB) return headA;
+            headA = headA -> next;
+            headB = headB -> next;
+        }
+        return NULL;
+    }
+
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int len1 = 0, len2 = 0;
+        ListNode* t1 = headA, *t2 = headB;
+        while(t1 != NULL){
+            len1++;
+            t1 = t1 -> next;
+        }
+        while(t2 != NULL){
+            len2++;
+            t2 = t2 -> next;
+        }
+
+        return solve(headA,headB,len1,len2);
     }
 };
