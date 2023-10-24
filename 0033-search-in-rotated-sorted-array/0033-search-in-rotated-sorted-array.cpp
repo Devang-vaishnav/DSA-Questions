@@ -1,39 +1,34 @@
 class Solution {
 public:
-    int searchPivot(vector<int>& nums,int n){
-        int s = 0; int e = n-1;
-        int m = s + (e-s)/2;
-        while(s <= e){
-            if(nums[m] >= nums[0]){
-                s = m+1;
-            }else{
-                e = m-1;
-            }
-            m = s+(e-s)/2;
+    int pivotIndex(vector<int>& nums){
+        int s = 0;
+        int e = nums.size()-1;
+        while(s < e){
+            int m = s+(e-s)/2;
+            if(nums[m] >= nums[0]) s = m+1;
+            else e = m;
         }
-        return m;
+        return e;
     }
 
-    int binarySearch(vector<int>& nums, int target, int s, int e){
-        int m = s+(e-s)/2;
+    int isExist(vector<int>& nums, int target, int s, int e){
         while(s <= e){
-            if(nums[m] == target){
-                return m;
-            }else if(nums[m] < target){
-                s = m+1;
-            }else{
-                e = m-1;
-            }
-            m = s+(e-s)/2;
+            int m = s+(e-s)/2;
+            if(nums[m] == target) return m;
+            else if(nums[m] < target) s = m+1;
+            else e = m-1;
         }
-        return -1;
+        return -1;;
     }
 
     int search(vector<int>& nums, int target) {
-        int n =  nums.size();
-        int pivot = searchPivot(nums,n);
-        cout<<pivot<<" ";
-        if(target >= nums[0]) return binarySearch(nums,target,0,pivot-1);
-        return binarySearch(nums,target,pivot,n-1);
+        int n = nums.size();
+        if(n == 1){
+            if(nums[0] == target) return 0;
+            else return -1;
+        }
+        int pvInd = pivotIndex(nums);
+        if(target >= nums[0] && target <= nums[pvInd-1]) return isExist(nums,target,0,pvInd-1);
+        return isExist(nums,target,pvInd,n-1);
     }
 };
