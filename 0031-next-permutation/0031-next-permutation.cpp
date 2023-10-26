@@ -19,6 +19,6 @@ public:
             }
         }
 
-        return reverse(nums.begin()+ind+1,nums.end());
+        return sort(nums.begin()+ind+1,nums.end());
     }
 };
