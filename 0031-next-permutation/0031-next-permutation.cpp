@@ -1,10 +1,6 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        //One Line Solution
-        //next_permutation(nums.begin(),nums.end());
-
-        // Implementation of next_permutation STL Method
         int n = nums.size();
         int ind = -1;
         for(int i = n-2; i >= 0; i--){
@@ -14,10 +10,7 @@ public:
             }
         }
 
-        if(ind == -1){
-            reverse(nums.begin(),nums.end());
-            return;
-        }
+        if(ind == -1) return reverse(nums.begin(),nums.end());
 
         for(int i = n-1; i >= 0; i--){
             if(nums[i] > nums[ind]){
@@ -26,7 +19,6 @@ public:
             }
         }
 
-        reverse(nums.begin()+ind+1,nums.end());
-        return;
+        return reverse(nums.begin()+ind+1,nums.end());
     }
 };
